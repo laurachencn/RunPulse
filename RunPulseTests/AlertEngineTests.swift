@@ -39,4 +39,41 @@ final class AlertEngineTests: XCTestCase {
         engine.checkHeartRate(175)
         XCTAssertEqual(engine.alertCount, 2)
     }
+    
+    func testResetClearsAllState() {
+        engine.checkHeartRate(175)
+        engine.reset()
+        XCTAssertFalse(engine.isAlerting)
+        XCTAssertEqual(engine.alertCount, 0)
+        XCTAssertNil(engine.lastAlertTime)
+    }
+    
+    func testExactlyAtThresholdNoAlert() {
+        engine.checkHeartRate(171)
+        XCTAssertFalse(engine.isAlerting)
+    }
+    
+    func testMultipleThresholds() {
+        let lowEngine = AlertEngine(threshold: 160)
+        let highEngine = AlertEngine(threshold: 180)
+        lowEngine.checkHeartRate(165)
+        highEngine.checkHeartRate(165)
+        XCTAssertTrue(lowEngine.isAlerting)
+        XCTAssertFalse(highEngine.isAlerting)
+    }
+    
+    func testLastAlertTimeSetOnTrigger() {
+        let before = Date()
+        engine.checkHeartRate(175)
+        XCTAssertNotNil(engine.lastAlertTime)
+        XCTAssertTrue(engine.lastAlertTime! >= before)
+    }
+    
+    func testRapidFluctuationHandling() {
+        for _ in 0..<10 {
+            engine.checkHeartRate(175)
+            engine.checkHeartRate(160)
+        }
+        XCTAssertFalse(engine.isAlerting)
+    }
 }
