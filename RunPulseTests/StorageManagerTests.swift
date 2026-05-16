@@ -25,7 +25,7 @@ final class StorageManagerTests: XCTestCase {
         try await super.tearDown()
     }
     
-    func testSaveAndLoadSingleRun() async {
+    func testSaveAndLoadSingleRun() async throws {
         let run = RunSession.newSession()
         await manager.saveRun(run)
         try await Task.sleep(nanoseconds: 50_000_000)
@@ -34,12 +34,12 @@ final class StorageManagerTests: XCTestCase {
         XCTAssertEqual(manager.savedRuns.first?.id, run.id)
     }
     
-    func testLoadEmptyStorage() async {
+    func testLoadEmptyStorage() async throws {
         await manager.loadRuns()
         XCTAssertTrue(manager.savedRuns.isEmpty)
     }
     
-    func testDeleteRun() async {
+    func testDeleteRun() async throws {
         let run = RunSession.newSession()
         await manager.saveRun(run)
         try await Task.sleep(nanoseconds: 50_000_000)
@@ -49,7 +49,7 @@ final class StorageManagerTests: XCTestCase {
         XCTAssertTrue(manager.savedRuns.isEmpty)
     }
     
-    func testMultipleRunsSortedByDate() async {
+    func testMultipleRunsSortedByDate() async throws {
         var run1 = RunSession.newSession()
         run1.startDate = Date().addingTimeInterval(-3600)
         var run2 = RunSession.newSession()
@@ -66,7 +66,7 @@ final class StorageManagerTests: XCTestCase {
         XCTAssertEqual(manager.savedRuns.last?.id, run1.id)
     }
     
-    func testSaveOverwritesExisting() async {
+    func testSaveOverwritesExisting() async throws {
         let run = RunSession.newSession()
         await manager.saveRun(run)
         try await Task.sleep(nanoseconds: 50_000_000)

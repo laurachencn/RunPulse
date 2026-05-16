@@ -54,6 +54,8 @@ targets:
     sources:
       - RunPulseTests/HealthKitManagerTests.swift
       - RunPulseTests/WatchSessionManagerTests.swift
+      - RunPulseTests/RunSessionTests.swift
+      - RunPulseTests/StorageManagerTests.swift
     settings:
       base:
         SWIFT_VERSION: 5.9
@@ -70,6 +72,7 @@ targets:
       - RunPulseTests/PaceTrackerTests.swift
       - RunPulseTests/AlertEngineTests.swift
       - RunPulseTests/IntegrationTests.swift
+      - RunPulseTests/WatchRunStateTests.swift
     settings:
       base:
         SWIFT_VERSION: 5.9
