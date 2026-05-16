@@ -2,6 +2,11 @@ import SwiftUI
 
 struct RunDetailView: View {
     let runSession: RunSession
+    @AppStorage("userAge") private var userAge: Int = 30
+    
+    var alertThreshold: Int {
+        Int(Double(220 - userAge) * 0.90)
+    }
     
     var body: some View {
         ScrollView {
@@ -78,7 +83,7 @@ struct RunDetailView: View {
                         .foregroundColor(.pink)
                         .frame(width: 70, alignment: .trailing)
                     
-                    if split.maxHeartRate > 170 {
+                    if split.maxHeartRate > Double(alertThreshold) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundColor(.red)
                     }

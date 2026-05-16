@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @StateObject private var healthKitManager = HealthKitManager.shared
-    @StateObject private var watchSessionManager = WatchSessionManager.shared
+    @StateObject private var healthKitManager = HealthKitManager()
+    @StateObject private var watchSessionManager = WatchSessionManager()
+    @StateObject private var storageManager = StorageManager.shared
     
     var body: some View {
         NavigationView {

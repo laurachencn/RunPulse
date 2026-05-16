@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MetricsView: View {
     let splits: [KilometerSplit]
+    @AppStorage("alertThreshold") private var alertThreshold: Int = 171
     
     var body: some View {
         List(splits) { split in
@@ -24,7 +25,7 @@ struct MetricsView: View {
                     
                     Spacer()
                     
-                    if split.maxHeartRate > 170 {
+                    if split.maxHeartRate > Double(alertThreshold) {
                         Label("High", systemImage: "exclamationmark.triangle.fill")
                             .font(.caption)
                             .foregroundColor(.red)

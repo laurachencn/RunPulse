@@ -5,6 +5,7 @@ struct RunView: View {
     @StateObject private var heartRateMonitor: HeartRateMonitor
     @StateObject private var paceTracker = PaceTracker()
     @StateObject private var alertEngine: AlertEngine
+    @AppStorage("alertThreshold") private var alertThreshold: Int = 171
     
     init() {
         _heartRateMonitor = StateObject(wrappedValue: HeartRateMonitor(alertThreshold: 171))

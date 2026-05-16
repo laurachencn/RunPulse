@@ -1,18 +1,21 @@
 import SwiftUI
 
 struct HistoryView: View {
-    @State private var runSessions: [RunSession] = []
+    @StateObject private var storageManager = StorageManager.shared
     
     var body: some View {
         NavigationView {
             Group {
-                if runSessions.isEmpty {
+                if storageManager.savedRuns.isEmpty {
                     emptyState
                 } else {
                     runList
                 }
             }
             .navigationTitle("Run History")
+            .task {
+                await storageManager.loadRuns()
+            }
         }
     }
     
@@ -33,7 +36,7 @@ struct HistoryView: View {
     }
     
     private var runList: some View {
-        List(runSessions) { session in
+        List(storageManager.savedRuns) { session in
             NavigationLink(destination: RunDetailView(runSession: session)) {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {

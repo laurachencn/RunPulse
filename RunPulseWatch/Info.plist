@@ -22,6 +22,8 @@
     <string>RunPulse monitors your heart rate during runs to provide real-time feedback.</string>
     <key>NSHealthUpdateUsageDescription</key>
     <string>RunPulse saves your workout sessions to HealthKit.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>RunPulse uses your location to track running distance and pace accurately during outdoor workouts.</string>
     <key>UIRequiredDeviceCapabilities</key>
     <array>
         <string>armv7k</string>

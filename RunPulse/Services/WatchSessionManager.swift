@@ -58,8 +58,31 @@ extension WatchSessionManager: WCSessionDelegate {
     }
     
     nonisolated func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        Task { @MainActor in
+            if let runSessionData = message["runSession"] as? Data {
+                do {
+                    let runSession = try JSONDecoder().decode(RunSession.self, from: runSessionData)
+                    lastReceivedRun = runSession
+                    // Save to history
+                    await StorageManager.shared.saveRun(runSession)
+                } catch {
+                    print("Failed to decode run session: \(error)")
+                }
+            }
+        }
     }
     
     nonisolated func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        Task { @MainActor in
+            if let runSessionData = applicationContext["runSession"] as? Data {
+                do {
+                    let runSession = try JSONDecoder().decode(RunSession.self, from: runSessionData)
+                    lastReceivedRun = runSession
+                    await StorageManager.shared.saveRun(runSession)
+                } catch {
+                    print("Failed to decode run session from context: \(error)")
+                }
+            }
+        }
     }
 }

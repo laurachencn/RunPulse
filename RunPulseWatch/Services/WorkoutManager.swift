@@ -23,8 +23,10 @@ final class WorkoutManager: NSObject, ObservableObject {
     private var allHeartRates: [Double] = []
     
     private var timer: Timer?
-    var startDate: Date?
-    var currentSession: RunSession?
+    private(set) var startDate: Date?
+    private(set) var currentSession: RunSession?
+    private var isPaused = false
+    private var pauseStartTime: Date?
     
     func calculatePace(duration: TimeInterval, distance: Double) -> TimeInterval {
         guard distance > 0 else { return 0 }
@@ -71,14 +73,23 @@ final class WorkoutManager: NSObject, ObservableObject {
     }
     
     func pauseWorkout() {
-        workoutSession?.end()
+        isPaused = true
+        pauseStartTime = Date()
         runState.state = .paused
         timer?.invalidate()
+        workoutSession?.pause()
     }
     
     func resumeWorkout() {
+        isPaused = false
+        if let pauseStart = pauseStartTime {
+            let pauseDuration = Date().timeIntervalSince(pauseStart)
+            startDate = Date().addingTimeInterval(-pauseDuration)
+        }
         runState.state = .running
         startTimer()
+        workoutSession?.resume()
+        pauseStartTime = nil
     }
     
     func endWorkout() async -> RunSession? {
@@ -225,6 +236,45 @@ extension WorkoutManager: HKLiveWorkoutBuilderDelegate {
     }
     
     nonisolated func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
+        Task { @MainActor in
+            guard let statisticsCollection = workoutBuilder.statistics else { return }
+            
+            // Process heart rate
+            if let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate),
+               let heartRateStats = statisticsCollection[heartRateType] {
+                if let heartRateQuantity = heartRateStats.mostRecentQuantity {
+                    let heartRate = heartRateQuantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute()))
+                    processHeartRate(heartRate)
+                }
+            }
+            
+            // Process distance
+            if let distanceType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning),
+               let distanceStats = statisticsCollection[distanceType] {
+                if let totalDistance = distanceStats.sumQuantity() {
+                    let distanceMeters = totalDistance.doubleValue(for: HKUnit.meter())
+                    let location = CLLocation(latitude: 0, longitude: 0) // GPS would provide actual coords
+                    processLocation(location)
+                    // Update total distance from HealthKit
+                    self.totalDistance = distanceMeters
+                    runState.currentDistance = distanceMeters
+                    runState.currentKilometer = currentKilometer(for: distanceMeters)
+                    
+                    if currentKilometerDistance >= 1000 {
+                        completeKilometer()
+                    }
+                }
+            }
+            
+            // Process calories
+            if let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned),
+               let calorieStats = statisticsCollection[calorieType] {
+                if let calorieQuantity = calorieStats.sumQuantity() {
+                    let calories = calorieQuantity.doubleValue(for: HKUnit.kilocalorie())
+                    runState.totalCalories = calories
+                }
+            }
+        }
     }
 }
 
