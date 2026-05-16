@@ -30,8 +30,10 @@
         <string>watchkit</string>
     </array>
     <key>WKCompanionAppBundleIdentifier</key>
-    <string>com.yourbundleid.RunPulse</string>
+    <string>com.laurachencn.RunPulse</string>
     <key>WKWatchOnly</key>
     <false/>
+    <key>WKApplication</key>
+    <true/>
 </dict>
 </plist>

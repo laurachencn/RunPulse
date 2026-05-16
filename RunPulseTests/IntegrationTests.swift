@@ -1,7 +1,7 @@
 import XCTest
-@testable import RunPulse
 @testable import RunPulseWatch
 
+@MainActor
 final class IntegrationTests: XCTestCase {
     func testFullRunSessionFlow() {
         var session = RunSession.newSession()

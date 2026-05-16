@@ -1,6 +1,7 @@
 import XCTest
 @testable import RunPulseWatch
 
+@MainActor
 final class AlertEngineTests: XCTestCase {
     var engine: AlertEngine!
     

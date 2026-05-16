@@ -148,7 +148,7 @@ final class WorkoutManager: NSObject, ObservableObject {
     
     private func triggerHeartRateAlert() {
         runState.isAlerting = true
-        WKInterfaceDevice.current().play(.heartbeat)
+        WKInterfaceDevice.current().play(.click)
     }
     
     func processLocation(_ location: CLLocation) {
@@ -200,7 +200,7 @@ final class WorkoutManager: NSObject, ObservableObject {
         splits.append(split)
         runState.lastSplit = split
         
-        WKInterfaceDevice.current().play(.notification(.success))
+        WKInterfaceDevice.current().play(.success)
         
         currentKilometerDistance = 0
         currentKilometerStartTime = Date()
@@ -237,12 +237,12 @@ extension WorkoutManager: HKLiveWorkoutBuilderDelegate {
     
     nonisolated func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         Task { @MainActor in
-            guard let statisticsCollection = workoutBuilder.statistics else { return }
+            let getStatistics = workoutBuilder.statistics
             
             // Process heart rate
             if let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate),
-               let heartRateStats = statisticsCollection[heartRateType] {
-                if let heartRateQuantity = heartRateStats.mostRecentQuantity {
+               let heartRateStats = getStatistics(heartRateType) {
+                if let heartRateQuantity = heartRateStats.mostRecentQuantity() {
                     let heartRate = heartRateQuantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute()))
                     processHeartRate(heartRate)
                 }
@@ -250,12 +250,9 @@ extension WorkoutManager: HKLiveWorkoutBuilderDelegate {
             
             // Process distance
             if let distanceType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning),
-               let distanceStats = statisticsCollection[distanceType] {
+               let distanceStats = getStatistics(distanceType) {
                 if let totalDistance = distanceStats.sumQuantity() {
                     let distanceMeters = totalDistance.doubleValue(for: HKUnit.meter())
-                    let location = CLLocation(latitude: 0, longitude: 0) // GPS would provide actual coords
-                    processLocation(location)
-                    // Update total distance from HealthKit
                     self.totalDistance = distanceMeters
                     runState.currentDistance = distanceMeters
                     runState.currentKilometer = currentKilometer(for: distanceMeters)
@@ -268,7 +265,7 @@ extension WorkoutManager: HKLiveWorkoutBuilderDelegate {
             
             // Process calories
             if let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned),
-               let calorieStats = statisticsCollection[calorieType] {
+               let calorieStats = getStatistics(calorieType) {
                 if let calorieQuantity = calorieStats.sumQuantity() {
                     let calories = calorieQuantity.doubleValue(for: HKUnit.kilocalorie())
                     runState.totalCalories = calories

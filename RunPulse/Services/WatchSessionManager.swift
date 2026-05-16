@@ -25,7 +25,7 @@ final class WatchSessionManager: NSObject, ObservableObject {
     
     func sendToWatch(_ message: [String: Any]) {
         guard session.isReachable else {
-            session.updateApplicationContext(message)
+            try? session.updateApplicationContext(message)
             return
         }
         session.sendMessage(message, replyHandler: nil) { error in
@@ -51,6 +51,13 @@ extension WatchSessionManager: WCSessionDelegate {
         }
     }
     
+    nonisolated func sessionDidBecomeInactive(_ session: WCSession) {
+    }
+    
+    nonisolated func sessionDidDeactivate(_ session: WCSession) {
+        session.activate()
+    }
+    
     nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
         Task { @MainActor in
             updateSessionState()
@@ -63,7 +70,6 @@ extension WatchSessionManager: WCSessionDelegate {
                 do {
                     let runSession = try JSONDecoder().decode(RunSession.self, from: runSessionData)
                     lastReceivedRun = runSession
-                    // Save to history
                     await StorageManager.shared.saveRun(runSession)
                 } catch {
                     print("Failed to decode run session: \(error)")

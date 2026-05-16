@@ -1,6 +1,7 @@
 import XCTest
 @testable import RunPulse
 
+@MainActor
 final class WatchSessionManagerTests: XCTestCase {
     var manager: WatchSessionManager!
     

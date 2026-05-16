@@ -37,7 +37,7 @@ final class AlertEngine: ObservableObject {
     
     private func triggerHapticAlert() {
         let device = WKInterfaceDevice.current()
-        device.play(.heartbeat)
+        device.play(.click)
     }
     
     func reset() {

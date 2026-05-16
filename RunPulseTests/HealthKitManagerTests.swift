@@ -1,6 +1,7 @@
 import XCTest
 @testable import RunPulse
 
+@MainActor
 final class HealthKitManagerTests: XCTestCase {
     func testHealthKitAuthorizationStatusReturnsCorrectValue() {
         let manager = HealthKitManager()

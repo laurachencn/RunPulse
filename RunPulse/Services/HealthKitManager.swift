@@ -13,8 +13,6 @@ final class HealthKitManager: ObservableObject {
         HKObjectType.quantityType(forIdentifier: .heartRate)!,
         HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
         HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
-        HKObjectType.quantityType(forIdentifier: .walkingRunningCadence)!,
-        HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
         HKObjectType.workoutType()
     ]
     

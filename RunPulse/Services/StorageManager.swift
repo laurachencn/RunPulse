@@ -13,7 +13,9 @@ final class StorageManager: ObservableObject {
     }
     
     init() {
-        loadRuns()
+        Task { @MainActor in
+            await loadRuns()
+        }
     }
     
     func saveRun(_ run: RunSession) async {

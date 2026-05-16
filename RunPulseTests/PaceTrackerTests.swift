@@ -1,6 +1,7 @@
 import XCTest
 @testable import RunPulseWatch
 
+@MainActor
 final class PaceTrackerTests: XCTestCase {
     var tracker: PaceTracker!
     
@@ -15,24 +16,24 @@ final class PaceTrackerTests: XCTestCase {
     }
     
     func testPaceForExactKilometer() {
-        tracker.updateDistance(1000, at: Date().addingTimeInterval(-300))
+        tracker.updateDistance(1000, at: Date().addingTimeInterval(300))
         XCTAssertEqual(tracker.currentPace, 300.0, accuracy: 0.1)
     }
     
     func testPaceForHalfKilometer() {
-        tracker.updateDistance(500, at: Date().addingTimeInterval(-150))
+        tracker.updateDistance(500, at: Date().addingTimeInterval(150))
         XCTAssertEqual(tracker.currentPace, 300.0, accuracy: 0.1)
     }
     
     func testKilometerCompletion() {
-        tracker.updateDistance(1000, at: Date().addingTimeInterval(-300))
+        tracker.updateDistance(1000, at: Date().addingTimeInterval(300))
         XCTAssertNotNil(tracker.lastSplit)
         XCTAssertEqual(tracker.lastSplit?.kilometerNumber, 1)
     }
     
     func testMultipleKilometers() {
-        tracker.updateDistance(1000, at: Date().addingTimeInterval(-300))
-        tracker.updateDistance(2000, at: Date().addingTimeInterval(-600))
+        tracker.updateDistance(1000, at: Date().addingTimeInterval(300))
+        tracker.updateDistance(2000, at: Date().addingTimeInterval(600))
         XCTAssertEqual(tracker.completedKilometers, 2)
     }
     
