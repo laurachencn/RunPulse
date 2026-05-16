@@ -1,0 +1,44 @@
+# Xcode
+build/
+*.xcodeproj/
+*.xcworkspace/
+*.xcuserdata/
+*.xccheckout/
+DerivedData/
+*.mode1v3
+*.mode2v3
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+**/*sync/
+.xcode.env.local
+
+# Swift
+.swiftpm/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Checkouts/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# Archives
+*.xcarchive
+
+# Export
+build/export/

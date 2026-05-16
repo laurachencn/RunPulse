@@ -1,0 +1,65 @@
+import Foundation
+import WatchConnectivity
+
+@MainActor
+final class WatchSessionManager: NSObject, ObservableObject {
+    static let shared = WatchSessionManager()
+    
+    @Published var isPaired = false
+    @Published var isReachable = false
+    @Published var lastReceivedRun: RunSession?
+    
+    private let session = WCSession.default
+    
+    override init() {
+        super.init()
+        session.delegate = self
+        session.activate()
+        updateSessionState()
+    }
+    
+    private func updateSessionState() {
+        isPaired = session.isPaired
+        isReachable = session.isReachable
+    }
+    
+    func sendToWatch(_ message: [String: Any]) {
+        guard session.isReachable else {
+            session.updateApplicationContext(message)
+            return
+        }
+        session.sendMessage(message, replyHandler: nil) { error in
+            print("Failed to send message: \(error)")
+        }
+    }
+    
+    func sendRunSession(_ session: RunSession) {
+        do {
+            let data = try JSONEncoder().encode(session)
+            let message = ["runSession": data]
+            sendToWatch(message)
+        } catch {
+            print("Failed to encode run session: \(error)")
+        }
+    }
+}
+
+extension WatchSessionManager: WCSessionDelegate {
+    nonisolated func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        Task { @MainActor in
+            updateSessionState()
+        }
+    }
+    
+    nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
+        Task { @MainActor in
+            updateSessionState()
+        }
+    }
+    
+    nonisolated func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+    }
+    
+    nonisolated func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+    }
+}
