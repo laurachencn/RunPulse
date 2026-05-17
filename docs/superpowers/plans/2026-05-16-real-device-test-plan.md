@@ -503,3 +503,35 @@
 5. **`WKCompanionAppBundleIdentifier` placeholder** — The Watch Info.plist may still contain `com.yourbundleid.RunPulse` instead of `com.laurachencn.RunPulse`.
 
 6. **No location permission handling** — The workout uses `.outdoor` configuration but there is no explicit `CLLocationManager` permission request in the Watch app.
+
+---
+
+## Quick Start Guide: Step-by-Step iPhone + Watch Test
+
+### Prerequisites
+- [ ] iPhone connected to Mac (USB or network via Xcode → Window → Devices and Simulators)
+- [ ] Apple Watch paired to iPhone, both unlocked
+- [ ] Developer Mode enabled on iPhone (Settings → Privacy & Security → Developer Mode)
+- [ ] Team set in Xcode for both `RunPulse` and `RunPulseWatch` targets
+
+### Phase 1: iPhone
+1. **Build & Install** — Select `RunPulse` scheme + your iPhone → ▶ Run
+2. **HealthKit Auth** — Tap "Grant Access" → enable all permissions → Allow
+3. **Settings** — Set your real age → verify Max HR and Alert Threshold update → close app → reopen → verify persistence
+4. **History** — Confirm empty state shows "No Runs Yet"
+
+### Phase 2: Apple Watch
+5. **Install** — Switch scheme to `RunPulseWatch` → select Watch destination → ▶ Run
+6. **Start Workout** — Tap "Start" → verify HR, Pace, Distance, Time appear
+7. **Walk 100m+** → verify distance increments, timer runs
+8. **End Workout** → verify Summary screen with stats
+9. **Sync Check** — Open iPhone app → History tab → verify run appears → tap for detail view
+
+### Troubleshooting Quick Reference
+| Issue | Fix |
+|-------|-----|
+| iPhone not in Xcode destinations | Plug in via USB, unlock phone, trust computer |
+| Watch app won't install | Ensure Watch is paired, unlocked, on same WiFi |
+| No HR data | Wear Watch snugly, wait 30s for sensor |
+| Run doesn't sync | Wait 30-60s for WCSession background sync |
+| HealthKit denied | iPhone Settings → Privacy → Health → RunPulse → enable all
