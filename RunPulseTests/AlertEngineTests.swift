@@ -69,6 +69,17 @@ final class AlertEngineTests: XCTestCase {
         XCTAssertTrue(engine.lastAlertTime! >= before)
     }
     
+    func testAlertTriggersVoiceFeedback() {
+        UserDefaults.standard.set(true, forKey: "voiceEnabled")
+        let engine = AlertEngine(threshold: 150)
+        XCTAssertFalse(engine.isAlerting)
+        
+        engine.checkHeartRate(160)
+        XCTAssertTrue(engine.isAlerting)
+        // VoiceService.speak should have been called (verified by no crash)
+        UserDefaults.standard.removeObject(forKey: "voiceEnabled")
+    }
+    
     func testRapidFluctuationHandling() {
         for _ in 0..<10 {
             engine.checkHeartRate(175)

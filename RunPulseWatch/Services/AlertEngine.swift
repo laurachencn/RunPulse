@@ -29,6 +29,10 @@ final class AlertEngine: ObservableObject {
         alertCount += 1
         lastAlertTime = Date()
         triggerHapticAlert()
+        guard !VoiceService.shared.isSpeaking else { return }
+        Task {
+            await VoiceService.shared.speak("Heart rate high, slow down")
+        }
     }
     
     private func clearAlert() {
