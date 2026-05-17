@@ -33,6 +33,37 @@ struct RunSession: Codable, Identifiable, Hashable {
         return String(format: "%d:%02d", minutes, seconds)
     }
     
+    var voiceSummaryText: String {
+        let distanceText = String(format: "%.1f", totalDistanceKm)
+        let durationText = formattedDurationForVoice
+        let avgHRText = "\(Int(averageHeartRate))"
+        let maxHRText = "\(Int(maxHeartRate))"
+        let paceText = formattedPaceForVoice
+        let caloriesText = "\(Int(totalCalories))"
+        
+        return "You ran \(distanceText) kilometers in \(durationText). Average heart rate: \(avgHRText) beats per minute. Max heart rate: \(maxHRText). Average pace: \(paceText) per kilometer. You burned \(caloriesText) calories."
+    }
+    
+    private var formattedDurationForVoice: String {
+        let hours = Int(totalDuration) / 3600
+        let minutes = (Int(totalDuration) % 3600) / 60
+        let seconds = Int(totalDuration) % 60
+        if hours > 0 {
+            return "\(hours) hours \(minutes) minutes and \(seconds) seconds"
+        }
+        return "\(minutes) minutes and \(seconds) seconds"
+    }
+    
+    private var formattedPaceForVoice: String {
+        guard averagePace > 0 else { return "not available" }
+        let minutes = Int(averagePace) / 60
+        let seconds = Int(averagePace) % 60
+        if minutes > 0 {
+            return "\(minutes) minutes \(seconds) seconds"
+        }
+        return "\(seconds) seconds"
+    }
+    
     static func newSession() -> RunSession {
         RunSession(
             id: UUID(),

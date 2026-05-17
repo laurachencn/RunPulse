@@ -119,6 +119,8 @@ final class WorkoutManager: NSObject, ObservableObject {
         
         await WatchConnectivityManager.shared.sendRunSession(session)
         
+        await VoiceService.shared.speak(session.voiceSummaryText)
+        
         return session
     }
     
