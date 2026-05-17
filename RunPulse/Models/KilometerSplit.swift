@@ -1,6 +1,6 @@
 import Foundation
 
-struct KilometerSplit: Codable, Identifiable {
+struct KilometerSplit: Codable, Identifiable, Hashable {
     let id: UUID
     let kilometerNumber: Int
     let duration: TimeInterval

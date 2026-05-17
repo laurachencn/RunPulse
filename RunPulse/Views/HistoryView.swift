@@ -4,29 +4,31 @@ struct HistoryView: View {
     @StateObject private var storageManager = StorageManager.shared
     
     var body: some View {
-        NavigationView {
-            Group {
-                if storageManager.savedRuns.isEmpty {
-                    emptyState
-                } else {
-                    runList
-                }
+        Group {
+            if storageManager.savedRuns.isEmpty {
+                emptyState
+            } else {
+                runList
             }
-            .navigationTitle("Run History")
-            .task {
-                await storageManager.loadRuns()
-            }
+        }
+        .navigationTitle("Run History")
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            await storageManager.loadRuns()
+        }
+        .navigationDestination(for: RunSession.self) { session in
+            RunDetailView(runSession: session)
         }
     }
     
     private var emptyState: some View {
         VStack(spacing: 16) {
             Image(systemName: "figure.run")
-                .font(.system(size: 48))
+                .font(.system(size: 40))
                 .foregroundColor(.gray)
             
             Text("No Runs Yet")
-                .font(.title2)
+                .font(.title3)
                 .fontWeight(.bold)
             
             Text("Start a run on your Apple Watch to see it here.")
@@ -37,14 +39,15 @@ struct HistoryView: View {
     
     private var runList: some View {
         List(storageManager.savedRuns) { session in
-            NavigationLink(destination: RunDetailView(runSession: session)) {
+            NavigationLink(value: session) {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Text(session.startDate, style: .date)
-                            .font(.headline)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
                         Spacer()
                         Text(session.durationString)
-                            .font(.subheadline)
+                            .font(.caption)
                             .foregroundColor(.secondary)
                     }
                     
