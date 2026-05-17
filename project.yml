@@ -7,6 +7,28 @@ options:
   xcodeVersion: "16.0"
   generateEmptyDirectories: true
 
+schemes:
+  RunPulse:
+    build:
+      targets:
+        RunPulse: all
+        RunPulseTests: [test]
+        RunPulseUITests: [test]
+    test:
+      targets:
+        - RunPulseTests
+        - RunPulseUITests
+      gatherCoverageData: false
+  RunPulseWatch:
+    build:
+      targets:
+        RunPulseWatch: all
+        RunPulseWatchTests: [test]
+    test:
+      targets:
+        - RunPulseWatchTests
+      gatherCoverageData: false
+
 targets:
   RunPulse:
     type: application

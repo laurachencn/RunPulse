@@ -59,12 +59,13 @@ extension WatchConnectivityManager: WCSessionDelegate {
         }
     }
     
-    
+    #if !os(watchOS)
     nonisolated func sessionDidBecomeInactive(_ session: WCSession) {}
     
     nonisolated func sessionDidDeactivate(_ session: WCSession) {
         session.activate()
     }
+    #endif
     
     nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
         Task { @MainActor in
