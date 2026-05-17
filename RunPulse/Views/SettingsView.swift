@@ -68,6 +68,9 @@ struct SettingsView: View {
         .onChange(of: alertThreshold) { _, newValue in
             WatchSessionManager.shared.sendSettingsUpdate(threshold: newValue)
         }
+        }
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
