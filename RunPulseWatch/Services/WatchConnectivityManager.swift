@@ -18,7 +18,11 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
     }
     
     private func updateSessionState() {
+        #if os(watchOS)
+        isPaired = true
+        #else
         isPaired = session.isPaired
+        #endif
         isReachable = session.isReachable
     }
     
@@ -53,12 +57,6 @@ extension WatchConnectivityManager: WCSessionDelegate {
         Task { @MainActor in
             updateSessionState()
         }
-    }
-    
-    nonisolated func sessionDidBecomeInactive(_ session: WCSession) {}
-    
-    nonisolated func sessionDidDeactivate(_ session: WCSession) {
-        session.activate()
     }
     
     nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
