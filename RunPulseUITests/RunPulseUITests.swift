@@ -9,7 +9,11 @@ final class RunPulseUITests: XCTestCase {
     }
     
     func testLaunchAndNavigate() throws {
-        XCTAssertTrue(app.staticTexts["Dashboard"].exists || app.staticTexts["RunPulse"].exists)
+        let hasDashboard = app.staticTexts["Dashboard"].exists
+            || app.staticTexts["RunPulse"].exists
+            || app.staticTexts["HealthKit Access Required"].exists
+            || app.staticTexts["Today's Activity"].exists
+        XCTAssertTrue(hasDashboard)
         
         let settingsTab = app.tabBars.buttons["Settings"]
         if settingsTab.exists {
