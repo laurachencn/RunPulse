@@ -18,12 +18,13 @@ struct RunDetailView: View {
             .padding()
         }
         .navigationTitle("Run Details")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     private var headerSection: some View {
         VStack(spacing: 8) {
             Text(runSession.startDate, style: .date)
-                .font(.title2)
+                .font(.title3)
                 .fontWeight(.bold)
             
             Text(runSession.startDate, style: .time)
@@ -31,13 +32,14 @@ struct RunDetailView: View {
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity)
-        .padding()
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .background(Color(.systemGray6))
         .cornerRadius(12)
     }
     
     private var statsGrid: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
             statCard(title: "Duration", value: runSession.durationString, icon: "stopwatch")
             statCard(title: "Distance", value: String(format: "%.2f km", runSession.totalDistanceKm), icon: "location.fill")
             statCard(title: "Avg Pace", value: runSession.averagePaceString, icon: "speedometer")
@@ -54,11 +56,13 @@ struct RunDetailView: View {
             Text(value)
                 .font(.title3)
                 .fontWeight(.semibold)
+                .scaledToFit()
             Text(title)
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
-        .padding()
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .background(Color(.systemGray6))
         .cornerRadius(12)
     }
@@ -66,7 +70,8 @@ struct RunDetailView: View {
     private var splitsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Kilometer Splits")
-                .font(.headline)
+                .font(.subheadline)
+                .fontWeight(.semibold)
             
             ForEach(runSession.splits) { split in
                 HStack {
@@ -91,14 +96,13 @@ struct RunDetailView: View {
                 .padding(.vertical, 4)
             }
         }
-        .padding()
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .background(Color(.systemGray6))
         .cornerRadius(12)
     }
 }
 
 #Preview {
-    NavigationView {
-        RunDetailView(runSession: RunSession.newSession())
-    }
+    RunDetailView(runSession: RunSession.newSession())
 }
