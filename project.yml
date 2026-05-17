@@ -95,6 +95,7 @@ targets:
       - RunPulseTests/AlertEngineTests.swift
       - RunPulseTests/IntegrationTests.swift
       - RunPulseTests/WatchRunStateTests.swift
+      - RunPulseTests/VoiceServiceTests.swift
     settings:
       base:
         SWIFT_VERSION: 5.9
