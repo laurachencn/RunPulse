@@ -2,6 +2,7 @@ import Foundation
 import HealthKit
 import WatchKit
 import CoreLocation
+import WatchConnectivity
 
 @MainActor
 final class WorkoutManager: NSObject, ObservableObject {
@@ -105,7 +106,7 @@ final class WorkoutManager: NSObject, ObservableObject {
             endDate: endDate,
             totalDuration: duration,
             totalDistance: totalDistance,
-            totalCalories: 0,
+            totalCalories: runState.totalCalories,
             averageHeartRate: allHeartRates.isEmpty ? 0 : allHeartRates.reduce(0, +) / Double(allHeartRates.count),
             maxHeartRate: allHeartRates.max() ?? 0,
             averagePace: calculatePace(duration: duration, distance: totalDistance),
@@ -115,6 +116,9 @@ final class WorkoutManager: NSObject, ObservableObject {
         
         currentSession = session
         runState.state = .completed
+        
+        await WatchConnectivityManager.shared.sendRunSession(session)
+        
         return session
     }
     

@@ -8,8 +8,10 @@ struct RunView: View {
     @AppStorage("alertThreshold") private var alertThreshold: Int = 171
     
     init() {
-        _heartRateMonitor = StateObject(wrappedValue: HeartRateMonitor(alertThreshold: 171))
-        _alertEngine = StateObject(wrappedValue: AlertEngine(threshold: 171))
+        let threshold = UserDefaults.standard.integer(forKey: "alertThreshold")
+        let effectiveThreshold = threshold > 0 ? threshold : 171
+        _heartRateMonitor = StateObject(wrappedValue: HeartRateMonitor(alertThreshold: effectiveThreshold))
+        _alertEngine = StateObject(wrappedValue: AlertEngine(threshold: effectiveThreshold))
     }
     
     var body: some View {
@@ -29,11 +31,12 @@ struct RunView: View {
     private var startScreen: some View {
         VStack(spacing: 16) {
             Image(systemName: "figure.run")
-                .font(.system(size: 48))
+                .font(.system(size: 40))
                 .foregroundColor(.green)
             
             Text("Ready to Run?")
-                .font(.headline)
+                .font(.subheadline)
+                .fontWeight(.semibold)
             
             Button(action: {
                 Task {
@@ -41,7 +44,7 @@ struct RunView: View {
                 }
             }) {
                 Text("Start")
-                    .font(.title2)
+                    .font(.title3)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -74,10 +77,10 @@ struct RunView: View {
                 .animation(.easeInOut, value: alertEngine.isAlerting)
             
             Text("\(Int(heartRateMonitor.currentHeartRate))")
-                .font(.system(size: 44, weight: .bold, design: .rounded))
+                .font(.system(size: 40, weight: .bold, design: .rounded))
             
             Text("BPM")
-                .font(.caption)
+                .font(.caption2)
                 .foregroundColor(.secondary)
         }
     }
@@ -85,11 +88,11 @@ struct RunView: View {
     private var paceDisplay: some View {
         VStack(spacing: 2) {
             Text("Pace")
-                .font(.caption)
+                .font(.caption2)
                 .foregroundColor(.secondary)
             
             Text(PaceTracker.formatPace(paceTracker.currentPace))
-                .font(.system(size: 32, weight: .semibold, design: .rounded))
+                .font(.system(size: 28, weight: .semibold, design: .rounded))
             
             Text("/km")
                 .font(.caption2)
@@ -101,7 +104,7 @@ struct RunView: View {
         HStack {
             VStack {
                 Text(formatDistance(paceTracker.totalDistance))
-                    .font(.title3)
+                    .font(.caption)
                     .fontWeight(.semibold)
                 Text("Distance")
                     .font(.caption2)
@@ -112,7 +115,7 @@ struct RunView: View {
             
             VStack {
                 Text(formatDuration(workoutManager.runState.currentDuration))
-                    .font(.title3)
+                    .font(.caption)
                     .fontWeight(.semibold)
                 Text("Time")
                     .font(.caption2)
@@ -123,7 +126,7 @@ struct RunView: View {
             
             VStack {
                 Text("\(paceTracker.completedKilometers)")
-                    .font(.title3)
+                    .font(.caption)
                     .fontWeight(.semibold)
                 Text("KM")
                     .font(.caption2)
@@ -137,11 +140,11 @@ struct RunView: View {
             Image(systemName: "exclamationmark.triangle.fill")
             Text("High HR! Slow down")
         }
-        .font(.caption)
+        .font(.caption2)
         .fontWeight(.bold)
         .foregroundColor(.white)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
         .background(Color.red)
         .cornerRadius(8)
         .padding(.top, 4)

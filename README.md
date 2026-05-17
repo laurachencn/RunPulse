@@ -48,7 +48,7 @@ RunPulse/              # iOS companion app (dashboard, history, settings)
 
 RunPulseWatch/         # Apple Watch app (primary workout interface)
 ├── Models/            # WatchRunState
-├── Services/          # WorkoutManager, HeartRateMonitor, PaceTracker, AlertEngine
+├── Services/          # WorkoutManager, HeartRateMonitor, PaceTracker, AlertEngine, WatchConnectivityManager
 └── Views/             # RunView, MetricsView, SummaryView
 
 RunPulseTests/         # Unit tests
@@ -73,18 +73,11 @@ Apple Watch                          iOS Companion
 
 **Data flow:** Watch starts workout → HealthKit streams HR/GPS → PaceTracker calculates splits → AlertEngine monitors HR threshold → on completion, run syncs to iOS via WCSession → iOS persists to JSON storage.
 
-**HR alert logic:** `Max HR = 220 - age` → `Alert threshold = Max HR × 0.90` → clears at `threshold - 5 bpm` (hysteresis).
+**HR alert logic:** See `AGENTS.md` for details.
 
-## Testing
+## Build & Test
 
-```bash
-# Run all tests
-xcodebuild test -scheme RunPulse -destination 'platform=iOS Simulator,name=iPhone 15'
-
-# Run a single test class
-xcodebuild test -scheme RunPulse -destination 'platform=iOS Simulator,name=iPhone 15' \
-  -only-testing:RunPulseTests/HeartRateMonitorTests
-```
+See [`AGENTS.md`](AGENTS.md) for build commands, test commands, and project generation details.
 
 ## Deployment
 
@@ -99,6 +92,14 @@ See deployment guides:
 3. Add app icons to both `Resources/` directories
 4. Configure a launch screen
 
+## Documentation
+
+- [Privacy Policy](docs/PRIVACY.md) — HealthKit data handling and App Store privacy requirements
+- [Troubleshooting](docs/TROUBLESHOOTING.md) — Common issues and solutions
+- [Connectivity Protocol](docs/CONNECTIVITY_PROTOCOL.md) — WatchConnectivity message format and sync behavior
+- [Changelog](CHANGELOG.md) — Release history
+- [Contributing](CONTRIBUTING.md) — How to contribute
+
 ## License
 
-[Add your license here]
+MIT License. See [`LICENSE`](LICENSE) for details.
