@@ -42,6 +42,11 @@ final class WatchSessionManager: NSObject, ObservableObject {
             print("Failed to encode run session: \(error)")
         }
     }
+    
+    func sendSettingsUpdate(threshold: Int) {
+        let message: [String: Any] = ["alertThreshold": threshold]
+        sendToWatch(message)
+    }
 }
 
 extension WatchSessionManager: WCSessionDelegate {
