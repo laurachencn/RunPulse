@@ -1,4 +1,5 @@
 import Foundation
+import UserNotifications
 import WatchConnectivity
 
 @MainActor
@@ -47,6 +48,25 @@ final class WatchSessionManager: NSObject, ObservableObject {
         let message: [String: Any] = ["alertThreshold": threshold]
         sendToWatch(message)
     }
+    
+    func deliverThresholdNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "RunPulse"
+        content.body = "Heart rate exceeded threshold — slow down"
+        content.sound = .defaultCritical
+        
+        let request = UNNotificationRequest(
+            identifier: "hr-threshold-breach",
+            content: content,
+            trigger: nil
+        )
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Failed to schedule notification: \(error)")
+            }
+        }
+    }
 }
 
 extension WatchSessionManager: WCSessionDelegate {
@@ -79,6 +99,9 @@ extension WatchSessionManager: WCSessionDelegate {
                 } catch {
                     print("Failed to decode run session: \(error)")
                 }
+            }
+            if message["thresholdBreach"] as? Bool == true {
+                deliverThresholdNotification()
             }
         }
     }

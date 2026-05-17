@@ -23,4 +23,8 @@ final class WatchSessionManagerTests: XCTestCase {
         let decoded = try? JSONDecoder().decode(RunSession.self, from: data!)
         XCTAssertEqual(decoded?.id, session.id)
     }
+    
+    func testDeliverThresholdNotificationDoesNotCrash() {
+        manager.deliverThresholdNotification()
+    }
 }
