@@ -50,6 +50,8 @@ targets:
       - sdk: HealthKit.framework
       - sdk: WatchConnectivity.framework
       - sdk: CoreData.framework
+      - target: RunPulseWatch
+        embed: true
 
   RunPulseWatch:
     type: application
