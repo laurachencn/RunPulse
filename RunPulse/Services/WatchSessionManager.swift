@@ -96,6 +96,7 @@ extension WatchSessionManager: WCSessionDelegate {
                     let runSession = try JSONDecoder().decode(RunSession.self, from: runSessionData)
                     lastReceivedRun = runSession
                     await StorageManager.shared.saveRun(runSession)
+                    await VoiceService.shared.speak(runSession.voiceSummaryText)
                 } catch {
                     print("Failed to decode run session: \(error)")
                 }
@@ -113,6 +114,7 @@ extension WatchSessionManager: WCSessionDelegate {
                     let runSession = try JSONDecoder().decode(RunSession.self, from: runSessionData)
                     lastReceivedRun = runSession
                     await StorageManager.shared.saveRun(runSession)
+                    await VoiceService.shared.speak(runSession.voiceSummaryText)
                 } catch {
                     print("Failed to decode run session from context: \(error)")
                 }
