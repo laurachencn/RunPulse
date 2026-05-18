@@ -24,10 +24,6 @@
     <string>RunPulse saves your workout sessions to HealthKit.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>RunPulse uses your location to track running distance and pace accurately during outdoor workouts.</string>
-    <key>UIRequiredDeviceCapabilities</key>
-    <array>
-        <string>arm64_32</string>
-    </array>
     <key>WKCompanionAppBundleIdentifier</key>
     <string>com.laurachencn.RunPulse</string>
     <key>WKWatchOnly</key>
