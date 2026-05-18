@@ -7,6 +7,7 @@ struct SettingsView: View {
     @AppStorage("restingHeartRate") private var restingHeartRate: Int = 60
     @AppStorage("useCustomMaxHR") private var useCustomMaxHR: Bool = false
     @AppStorage("customMaxHR") private var customMaxHR: Int = 190
+    @AppStorage("voiceEnabled") private var voiceEnabled: Bool = true
     
     var calculatedMaxHR: Int {
         220 - userAge
@@ -54,6 +55,13 @@ struct SettingsView: View {
                 }
             }
             
+            Section(header: Text("Notifications")) {
+                Toggle("Voice Feedback", isOn: $voiceEnabled)
+                Text("Spoken alerts and post-run summaries")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+
             Section(header: Text("About")) {
                 HStack {
                     Text("Version")
