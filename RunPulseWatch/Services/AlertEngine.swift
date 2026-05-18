@@ -33,6 +33,9 @@ final class AlertEngine: ObservableObject {
         Task {
             await VoiceService.shared.speak("Heart rate high, slow down")
         }
+        Task {
+            await WatchConnectivityManager.shared.sendThresholdBreach()
+        }
     }
     
     private func clearAlert() {

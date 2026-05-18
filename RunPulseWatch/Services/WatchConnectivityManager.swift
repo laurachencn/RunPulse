@@ -41,6 +41,11 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         sendToWatch(message)
     }
     
+    func sendThresholdBreach() {
+        let message: [String: Any] = ["thresholdBreach": true]
+        sendToWatch(message)
+    }
+    
     private func sendToWatch(_ message: [String: Any]) {
         guard session.isReachable else {
             try? session.updateApplicationContext(message)

@@ -117,6 +117,9 @@ extension WatchSessionManager: WCSessionDelegate {
                     print("Failed to decode run session from context: \(error)")
                 }
             }
+            if applicationContext["thresholdBreach"] as? Bool == true {
+                deliverThresholdNotification()
+            }
         }
     }
 }
