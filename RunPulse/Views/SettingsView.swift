@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct SettingsView: View {
+    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+    let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+    
     @AppStorage("userAge") private var userAge: Int = 30
     @AppStorage("userWeight") private var userWeight: Double = 70.0
     @AppStorage("userHeight") private var userHeight: Double = 175.0
@@ -66,7 +69,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Version")
                     Spacer()
-                    Text("1.0.0")
+                    Text("\(appVersion) (\(buildNumber))")
                         .foregroundColor(.secondary)
                 }
             }
