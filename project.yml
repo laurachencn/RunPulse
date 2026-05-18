@@ -43,6 +43,7 @@ targets:
         TARGETED_DEVICE_FAMILY: "1,2"
         INFOPLIST_FILE: RunPulse/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_ENTITLEMENTS: RunPulse/RunPulse.entitlements
     dependencies:
       - sdk: UIKit.framework
       - sdk: SwiftUI.framework

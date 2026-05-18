@@ -35,10 +35,10 @@ final class HealthKitManager: ObservableObject {
         isAuthorized = true
     }
     
-    func checkAuthorizationStatus() async {
+    func checkAuthorizationStatus() {
         var authorized = true
         for type in typesToRead {
-            let status = await healthStore.authorizationStatus(for: type)
+            let status = healthStore.authorizationStatus(for: type)
             if status != .sharingAuthorized {
                 authorized = false
                 break

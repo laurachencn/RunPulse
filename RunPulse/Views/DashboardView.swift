@@ -4,6 +4,7 @@ struct DashboardView: View {
     @StateObject private var healthKitManager = HealthKitManager()
     @StateObject private var watchSessionManager = WatchSessionManager()
     @StateObject private var storageManager = StorageManager.shared
+    @State private var authError: String?
     
     private var todayRuns: [RunSession] {
         storageManager.savedRuns.filter { Calendar.current.isDateInToday($0.startDate) }
@@ -34,6 +35,9 @@ struct DashboardView: View {
         .navigationTitle("Dashboard")
         .navigationBarTitleDisplayMode(.inline)
         .padding()
+        .task {
+            healthKitManager.checkAuthorizationStatus()
+        }
     }
     
     private var authorizationPrompt: some View {
@@ -52,10 +56,21 @@ struct DashboardView: View {
             
             Button("Grant Access") {
                 Task {
-                    try? await healthKitManager.requestAuthorization()
+                    do {
+                        try await healthKitManager.requestAuthorization()
+                    } catch {
+                        authError = error.localizedDescription
+                    }
                 }
             }
             .buttonStyle(.borderedProminent)
+            .alert("HealthKit Error", isPresented: .constant(authError != nil)) {
+                Button("OK") {
+                    authError = nil
+                }
+            } message: {
+                Text(authError ?? "")
+            }
         }
         .padding()
     }
