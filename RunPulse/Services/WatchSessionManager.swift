@@ -49,6 +49,16 @@ final class WatchSessionManager: NSObject, ObservableObject {
         sendToWatch(message)
     }
     
+    func sendAudioCueConfig(_ config: AudioCueConfig) {
+        do {
+            let data = try JSONEncoder().encode(config)
+            let message: [String: Any] = ["audioCueConfig": data]
+            sendToWatch(message)
+        } catch {
+            print("Failed to encode audio cue config: \(error)")
+        }
+    }
+    
     func deliverThresholdNotification() {
         let content = UNMutableNotificationContent()
         content.title = "RunPulse"

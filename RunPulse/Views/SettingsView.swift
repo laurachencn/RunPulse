@@ -12,6 +12,13 @@ struct SettingsView: View {
     @AppStorage("customMaxHR") private var customMaxHR: Int = 190
     @AppStorage("voiceEnabled") private var voiceEnabled: Bool = true
     
+    @AppStorage("audioCueAnnouncePace") private var announcePace: Bool = AudioCueConfig.default.announcePace
+    @AppStorage("audioCueAnnounceHR") private var announceHR: Bool = AudioCueConfig.default.announceHeartRate
+    @AppStorage("audioCueAnnounceDistance") private var announceDistance: Bool = AudioCueConfig.default.announceDistance
+    @AppStorage("audioCueAnnounceCalories") private var announceCalories: Bool = AudioCueConfig.default.announceCalories
+    @AppStorage("audioCueDistanceInterval") private var distanceIntervalRaw: Double = AudioCueConfig.default.distanceInterval.rawValue
+    @AppStorage("audioCueTimeInterval") private var timeIntervalRaw: Int = AudioCueConfig.default.timeInterval.rawValue
+    
     var calculatedMaxHR: Int {
         220 - userAge
     }
@@ -81,6 +88,26 @@ struct SettingsView: View {
         .onChange(of: alertThreshold) { _, newValue in
             WatchSessionManager.shared.sendSettingsUpdate(threshold: newValue)
         }
+        .onChange(of: audioCueConfigHash) { _, _ in
+            let config = buildAudioCueConfig()
+            WatchSessionManager.shared.sendAudioCueConfig(config)
+        }
+    }
+    
+    private var audioCueConfigHash: String {
+        "\(voiceEnabled)-\(announcePace)-\(announceHR)-\(announceDistance)-\(announceCalories)-\(distanceIntervalRaw)-\(timeIntervalRaw)"
+    }
+    
+    private func buildAudioCueConfig() -> AudioCueConfig {
+        AudioCueConfig(
+            voiceEnabled: voiceEnabled,
+            announcePace: announcePace,
+            announceHeartRate: announceHR,
+            announceDistance: announceDistance,
+            announceCalories: announceCalories,
+            distanceInterval: DistanceInterval(rawValue: distanceIntervalRaw) ?? .km1,
+            timeInterval: TimeIntervalInterval(rawValue: timeIntervalRaw) ?? .off
+        )
     }
 }
 

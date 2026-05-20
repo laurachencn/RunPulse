@@ -83,6 +83,20 @@ extension WatchConnectivityManager: WCSessionDelegate {
             if let threshold = message["alertThreshold"] as? Int {
                 UserDefaults.standard.set(threshold, forKey: "alertThreshold")
             }
+            if let audioCueConfigData = message["audioCueConfig"] as? Data {
+                do {
+                    let config = try JSONDecoder().decode(AudioCueConfig.self, from: audioCueConfigData)
+                    UserDefaults.standard.set(config.voiceEnabled, forKey: "audioCueVoiceEnabled")
+                    UserDefaults.standard.set(config.announcePace, forKey: "audioCueAnnouncePace")
+                    UserDefaults.standard.set(config.announceHeartRate, forKey: "audioCueAnnounceHR")
+                    UserDefaults.standard.set(config.announceDistance, forKey: "audioCueAnnounceDistance")
+                    UserDefaults.standard.set(config.announceCalories, forKey: "audioCueAnnounceCalories")
+                    UserDefaults.standard.set(config.distanceInterval.rawValue, forKey: "audioCueDistanceInterval")
+                    UserDefaults.standard.set(config.timeInterval.rawValue, forKey: "audioCueTimeInterval")
+                } catch {
+                    print("Failed to decode audio cue config: \(error)")
+                }
+            }
         }
     }
     
@@ -90,6 +104,20 @@ extension WatchConnectivityManager: WCSessionDelegate {
         Task { @MainActor in
             if let threshold = applicationContext["alertThreshold"] as? Int {
                 UserDefaults.standard.set(threshold, forKey: "alertThreshold")
+            }
+            if let audioCueConfigData = applicationContext["audioCueConfig"] as? Data {
+                do {
+                    let config = try JSONDecoder().decode(AudioCueConfig.self, from: audioCueConfigData)
+                    UserDefaults.standard.set(config.voiceEnabled, forKey: "audioCueVoiceEnabled")
+                    UserDefaults.standard.set(config.announcePace, forKey: "audioCueAnnouncePace")
+                    UserDefaults.standard.set(config.announceHeartRate, forKey: "audioCueAnnounceHR")
+                    UserDefaults.standard.set(config.announceDistance, forKey: "audioCueAnnounceDistance")
+                    UserDefaults.standard.set(config.announceCalories, forKey: "audioCueAnnounceCalories")
+                    UserDefaults.standard.set(config.distanceInterval.rawValue, forKey: "audioCueDistanceInterval")
+                    UserDefaults.standard.set(config.timeInterval.rawValue, forKey: "audioCueTimeInterval")
+                } catch {
+                    print("Failed to decode audio cue config from context: \(error)")
+                }
             }
         }
     }
