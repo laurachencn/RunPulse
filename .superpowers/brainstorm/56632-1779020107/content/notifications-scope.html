@@ -1,0 +1,33 @@
+<h2>Notifications: What kind of alerts do you want?</h2>
+<p class="subtitle">RunPulse currently has haptic-only HR alerts on the Watch. Let's define the notification strategy.</p>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Watch Haptic + Voice</h3>
+      <p>Keep haptic alerts on Watch, add spoken feedback ("Heart rate high, slow down") via Watch speaker/headphones. iOS stays silent during runs.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Watch + iOS Push Notifications</h3>
+      <p>Watch gets haptic alerts during runs. iOS also receives a notification when HR threshold is exceeded (useful if phone is nearby but not wearing Watch).</p>
+    </div>
+  </div>
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Watch Haptic + iOS Voice Report Post-Run</h3>
+      <p>During run: haptic-only on Watch. After run ends: iOS speaks a summary ("You ran 5.2 km in 28 minutes, average heart rate 152 BPM").</p>
+    </div>
+  </div>
+  <div class="option" data-choice="d" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="content">
+      <h3>All of the Above</h3>
+      <p>Full notification suite: haptic + voice during run, iOS push for threshold breaches, post-run voice summary on both devices.</p>
+    </div>
+  </div>
+</div>

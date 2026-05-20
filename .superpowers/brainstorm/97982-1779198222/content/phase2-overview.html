@@ -1,0 +1,56 @@
+<h2>Phase 2: Smart Run Features — Feature Overview</h2>
+<p class="subtitle">4 features to design. Click the ones you want to prioritize first.</p>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="audio-cues" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Audio Cues</h3>
+      <p>Customizable spoken alerts during runs — pace, HR, distance milestones, intervals. Configurable triggers and voice messages.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="run-goals" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Run Goals</h3>
+      <p>Set targets before or during a run — distance, time, pace, calories. Real-time progress feedback and completion celebrations.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="trends" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Trends & Analytics</h3>
+      <p>Weekly/monthly charts, pace trends, HR zones, personal records. iOS dashboard with visual graphs and insights.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="auto-pause" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="content">
+      <h3>Auto-Pause</h3>
+      <p>Automatically pause when stopped (traffic lights, water breaks). Resume when movement detected. Smart detection with configurable sensitivity.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 2rem;">
+  <h3>Current App Structure</h3>
+  <p class="subtitle">What exists today — Phase 2 builds on top of this</p>
+  <div class="mockup">
+    <div class="mockup-header">Watch App (RunPulseWatch)</div>
+    <div class="mockup-body" style="padding: 1rem;">
+      <div class="mock-nav">RunView → MetricsView → SummaryView</div>
+      <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #888;">
+        Services: WorkoutManager, HeartRateMonitor, PaceTracker, AlertEngine, VoiceService, WatchConnectivityManager
+      </div>
+    </div>
+  </div>
+  <div class="mockup" style="margin-top: 0.5rem;">
+    <div class="mockup-header">iOS App (RunPulse)</div>
+    <div class="mockup-body" style="padding: 1rem;">
+      <div class="mock-nav">Dashboard → History → Run Detail → Settings</div>
+      <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #888;">
+        Services: StorageManager, WatchSessionManager, HealthKitManager, VoiceService
+      </div>
+    </div>
+  </div>
+</div>

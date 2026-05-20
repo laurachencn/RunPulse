@@ -1,0 +1,143 @@
+<h2>Audio Cues — Configuration UI Options</h2>
+<p class="subtitle">Where should users configure audio cues? Pick the approach that feels right.</p>
+
+<div class="cards">
+  <div class="card" data-choice="ios-only" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #1a1a2e; padding: 1rem; min-height: 280px; border-radius: 8px;">
+      <div style="background: #000; border-radius: 12px; padding: 0.75rem; max-width: 200px; margin: 0 auto;">
+        <div style="color: #fff; font-size: 0.7rem; font-weight: 600; margin-bottom: 0.5rem;">⚙️ Settings</div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.5rem; margin-bottom: 0.4rem;">
+          <div style="color: #fff; font-size: 0.65rem; font-weight: 500;">Audio Cues</div>
+          <div style="color: #888; font-size: 0.55rem;">Configure run announcements</div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.5rem; margin-bottom: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.6rem;">Pace Announcements</span>
+            <div style="width: 30px; height: 16px; background: #34c759; border-radius: 8px; position: relative;"><div style="width: 14px; height: 14px; background: #fff; border-radius: 50%; position: absolute; right: 1px; top: 1px;"></div></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.5rem; margin-bottom: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.6rem;">Heart Rate Alerts</span>
+            <div style="width: 30px; height: 16px; background: #34c759; border-radius: 8px; position: relative;"><div style="width: 14px; height: 14px; background: #fff; border-radius: 50%; position: absolute; right: 1px; top: 1px;"></div></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.5rem; margin-bottom: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.6rem;">Distance Milestones</span>
+            <div style="width: 30px; height: 16px; background: #34c759; border-radius: 8px; position: relative;"><div style="width: 14px; height: 14px; background: #fff; border-radius: 50%; position: absolute; right: 1px; top: 1px;"></div></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.5rem; margin-bottom: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.6rem;">Announce Every</span>
+            <span style="color: #34c759; font-size: 0.6rem;">1 km ▾</span>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.6rem;">Voice</span>
+            <span style="color: #888; font-size: 0.6rem;">Siri ▾</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A: iOS Settings Only</h3>
+      <p>All configuration on iPhone. Watch reads settings via WCSession. Simpler, familiar pattern.</p>
+    </div>
+  </div>
+  
+  <div class="card" data-choice="both" onclick="toggleSelect(this)">
+    <div class="card-image" style="display: flex; gap: 0.5rem; padding: 0.5rem;">
+      <div style="background: #000; border-radius: 12px; padding: 0.5rem; width: 100px; flex-shrink: 0;">
+        <div style="color: #fff; font-size: 0.5rem; font-weight: 600; margin-bottom: 0.3rem; text-align: center;">⌚ Watch</div>
+        <div style="background: #1c1c1e; border-radius: 6px; padding: 0.3rem; margin-bottom: 0.2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.45rem;">Pace</span>
+            <div style="width: 18px; height: 10px; background: #34c759; border-radius: 5px;"></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 6px; padding: 0.3rem; margin-bottom: 0.2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.45rem;">HR</span>
+            <div style="width: 18px; height: 10px; background: #34c759; border-radius: 5px;"></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 6px; padding: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.45rem;">Every</span>
+            <span style="color: #34c759; font-size: 0.45rem;">1km</span>
+          </div>
+        </div>
+      </div>
+      <div style="background: #000; border-radius: 12px; padding: 0.5rem; width: 120px; flex-shrink: 0;">
+        <div style="color: #fff; font-size: 0.5rem; font-weight: 600; margin-bottom: 0.3rem; text-align: center;">📱 iOS</div>
+        <div style="background: #1c1c1e; border-radius: 6px; padding: 0.3rem; margin-bottom: 0.2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.45rem;">Pace</span>
+            <div style="width: 20px; height: 10px; background: #34c759; border-radius: 5px;"></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 6px; padding: 0.3rem; margin-bottom: 0.2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.45rem;">HR</span>
+            <div style="width: 20px; height: 10px; background: #34c759; border-radius: 5px;"></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 6px; padding: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.45rem;">Distance</span>
+            <div style="width: 20px; height: 10px; background: #34c759; border-radius: 5px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B: Both Watch + iOS</h3>
+      <p>Quick toggles on Watch during run setup. Full config on iOS. Synced via WCSession.</p>
+    </div>
+  </div>
+  
+  <div class="card" data-choice="watch-only" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #1a1a2e; padding: 1rem; min-height: 280px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+      <div style="background: #000; border-radius: 24px; padding: 1rem; width: 140px;">
+        <div style="color: #fff; font-size: 0.7rem; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">🎙 Audio Cues</div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.4rem; margin-bottom: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.55rem;">Pace</span>
+            <div style="width: 24px; height: 13px; background: #34c759; border-radius: 7px; position: relative;"><div style="width: 11px; height: 11px; background: #fff; border-radius: 50%; position: absolute; right: 1px; top: 1px;"></div></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.4rem; margin-bottom: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.55rem;">Heart Rate</span>
+            <div style="width: 24px; height: 13px; background: #34c759; border-radius: 7px; position: relative;"><div style="width: 11px; height: 11px; background: #fff; border-radius: 50%; position: absolute; right: 1px; top: 1px;"></div></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.4rem; margin-bottom: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.55rem;">Distance</span>
+            <div style="width: 24px; height: 13px; background: #555; border-radius: 7px; position: relative;"><div style="width: 11px; height: 11px; background: #fff; border-radius: 50%; position: absolute; left: 1px; top: 1px;"></div></div>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.4rem; margin-bottom: 0.3rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.55rem;">Frequency</span>
+            <span style="color: #34c759; font-size: 0.55rem;">1 km</span>
+          </div>
+        </div>
+        <div style="background: #1c1c1e; border-radius: 8px; padding: 0.4rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #fff; font-size: 0.55rem;">Time Interval</span>
+            <span style="color: #888; font-size: 0.55rem;">Off</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C: Watch Only</h3>
+      <p>Configure directly on Watch before run. Minimal iOS changes. Best for runners who don't carry phones.</p>
+    </div>
+  </div>
+</div>
