@@ -101,6 +101,7 @@ targets:
       - RunPulseTests/IntegrationTests.swift
       - RunPulseTests/WatchRunStateTests.swift
       - RunPulseTests/VoiceServiceTests.swift
+      - RunPulseTests/AudioCueManagerTests.swift
     settings:
       base:
         SWIFT_VERSION: 5.9
