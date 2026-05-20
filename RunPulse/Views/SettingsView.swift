@@ -65,6 +65,8 @@ struct SettingsView: View {
                     .foregroundColor(.secondary)
             }
 
+            AudioCuesSection()
+
             Section(header: Text("About")) {
                 HStack {
                     Text("Version")
