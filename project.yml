@@ -82,6 +82,7 @@ targets:
       - RunPulseTests/WatchSessionManagerTests.swift
       - RunPulseTests/RunSessionTests.swift
       - RunPulseTests/StorageManagerTests.swift
+      - RunPulseTests/AudioCueConfigTests.swift
     settings:
       base:
         SWIFT_VERSION: 5.9
