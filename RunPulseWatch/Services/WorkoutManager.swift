@@ -8,6 +8,7 @@ import WatchConnectivity
 final class WorkoutManager: NSObject, ObservableObject {
     @Published var runState = WatchRunState.idle
     @Published var splits: [KilometerSplit] = []
+    @Published var errorMessage: String?
     
     private let healthStore = HKHealthStore()
     private var workoutSession: HKWorkoutSession?
@@ -64,6 +65,7 @@ final class WorkoutManager: NSObject, ObservableObject {
             try await healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead)
         } catch {
             print("HealthKit authorization failed: \(error)")
+            errorMessage = "HealthKit authorization failed: \(error.localizedDescription)"
             return
         }
         
@@ -88,11 +90,16 @@ final class WorkoutManager: NSObject, ObservableObject {
                         self.audioCueManager = AudioCueManager(config: config)
                     }
                 } else {
-                    print("beginCollection failed: \(error?.localizedDescription ?? "unknown error")")
+                    let errorMsg = error?.localizedDescription ?? "unknown error"
+                    print("beginCollection failed: \(errorMsg)")
+                    Task { @MainActor in
+                        self.errorMessage = "Failed to start tracking: \(errorMsg)"
+                    }
                 }
             }
         } catch {
             print("Failed to start workout: \(error)")
+            errorMessage = "Failed to start workout: \(error.localizedDescription)"
         }
     }
     

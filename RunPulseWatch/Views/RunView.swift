@@ -5,6 +5,7 @@ struct RunView: View {
     @StateObject private var heartRateMonitor: HeartRateMonitor
     @StateObject private var paceTracker = PaceTracker()
     @StateObject private var alertEngine: AlertEngine
+    @State private var showingError = false
     @AppStorage("alertThreshold") private var alertThreshold: Int = 171
     
     init() {
@@ -26,6 +27,18 @@ struct RunView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .alert("Error", isPresented: $showingError) {
+            Button("OK", role: .cancel) {
+                workoutManager.errorMessage = nil
+            }
+        } message: {
+            Text(workoutManager.errorMessage ?? "Unknown error")
+        }
+        .onChange(of: workoutManager.errorMessage) { newValue in
+            if newValue != nil {
+                showingError = true
+            }
+        }
     }
     
     private var startScreen: some View {
