@@ -29,6 +29,8 @@ final class WorkoutManager: NSObject, ObservableObject {
     private var isPaused = false
     private var pauseStartTime: Date?
     
+    private var audioCueManager: AudioCueManager?
+    
     func calculatePace(duration: TimeInterval, distance: Double) -> TimeInterval {
         guard distance > 0 else { return 0 }
         let km = distance / 1000.0
@@ -65,6 +67,8 @@ final class WorkoutManager: NSObject, ObservableObject {
                         self.startDate = Date()
                         self.currentKilometerStartTime = Date()
                         self.startTimer()
+                        let config = self.loadAudioCueConfig()
+                        self.audioCueManager = AudioCueManager(config: config)
                     }
                 }
             }
@@ -117,6 +121,8 @@ final class WorkoutManager: NSObject, ObservableObject {
         currentSession = session
         runState.state = .completed
         
+        audioCueManager?.reset()
+        
         await WatchConnectivityManager.shared.sendRunSession(session)
         
         await VoiceService.shared.speak(session.voiceSummaryText)
@@ -135,6 +141,46 @@ final class WorkoutManager: NSObject, ObservableObject {
     private func updateDuration() {
         guard let startTime = startDate else { return }
         runState.currentDuration = Date().timeIntervalSince(startTime)
+        
+        if let audioCueManager = audioCueManager {
+            audioCueManager.updateMetrics(
+                distance: totalDistance,
+                pace: runState.currentPace,
+                heartRate: currentHeartRate,
+                calories: runState.totalCalories,
+                currentTime: Date()
+            )
+            
+            for cue in audioCueManager.pendingCues {
+                guard !VoiceService.shared.isSpeaking else { break }
+                Task {
+                    await VoiceService.shared.speak(cue)
+                }
+            }
+            audioCueManager.resetCues()
+        }
+    }
+    
+    private func loadAudioCueConfig() -> AudioCueConfig {
+        let voiceEnabled = UserDefaults.standard.object(forKey: "audioCueVoiceEnabled") as? Bool ?? AudioCueConfig.default.voiceEnabled
+        let announcePace = UserDefaults.standard.object(forKey: "audioCueAnnouncePace") as? Bool ?? AudioCueConfig.default.announcePace
+        let announceHR = UserDefaults.standard.object(forKey: "audioCueAnnounceHR") as? Bool ?? AudioCueConfig.default.announceHeartRate
+        let announceDistance = UserDefaults.standard.object(forKey: "audioCueAnnounceDistance") as? Bool ?? AudioCueConfig.default.announceDistance
+        let announceCalories = UserDefaults.standard.object(forKey: "audioCueAnnounceCalories") as? Bool ?? AudioCueConfig.default.announceCalories
+        let distRaw = UserDefaults.standard.double(forKey: "audioCueDistanceInterval")
+        let distInterval = DistanceInterval(rawValue: distRaw) ?? AudioCueConfig.default.distanceInterval
+        let timeRaw = UserDefaults.standard.integer(forKey: "audioCueTimeInterval")
+        let timeInterval = TimeIntervalInterval(rawValue: timeRaw) ?? AudioCueConfig.default.timeInterval
+        
+        return AudioCueConfig(
+            voiceEnabled: voiceEnabled,
+            announcePace: announcePace,
+            announceHeartRate: announceHR,
+            announceDistance: announceDistance,
+            announceCalories: announceCalories,
+            distanceInterval: distInterval,
+            timeInterval: timeInterval
+        )
     }
     
     func processHeartRate(_ heartRate: Double) {

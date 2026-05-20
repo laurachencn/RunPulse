@@ -52,6 +52,12 @@ struct RunView: View {
                     .foregroundColor(.white)
                     .cornerRadius(12)
             }
+            
+            NavigationLink(destination: AudioCueSettingsView()) {
+                Label("Audio Cues", systemImage: "mic.fill")
+                    .font(.caption)
+                    .foregroundColor(.blue)
+            }
         }
         .padding()
     }

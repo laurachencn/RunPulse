@@ -4,7 +4,9 @@ import SwiftUI
 struct RunPulseWatchApp: App {
     var body: some Scene {
         WindowGroup {
-            RunView()
+            NavigationStack {
+                RunView()
+            }
         }
     }
 }
