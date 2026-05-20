@@ -50,6 +50,23 @@ final class WorkoutManager: NSObject, ObservableObject {
         configuration.activityType = .running
         configuration.locationType = .outdoor
         
+        let typesToShare: Set = [
+            HKObjectType.workoutType()
+        ]
+        
+        let typesToRead: Set = [
+            HKObjectType.quantityType(forIdentifier: .heartRate)!,
+            HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+        ]
+        
+        do {
+            try await healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead)
+        } catch {
+            print("HealthKit authorization failed: \(error)")
+            return
+        }
+        
         do {
             workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: configuration)
             workoutBuilder = workoutSession?.associatedWorkoutBuilder()
@@ -70,6 +87,8 @@ final class WorkoutManager: NSObject, ObservableObject {
                         let config = self.loadAudioCueConfig()
                         self.audioCueManager = AudioCueManager(config: config)
                     }
+                } else {
+                    print("beginCollection failed: \(error?.localizedDescription ?? "unknown error")")
                 }
             }
         } catch {
