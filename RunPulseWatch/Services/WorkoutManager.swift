@@ -56,6 +56,7 @@ final class WorkoutManager: NSObject, ObservableObject {
         ]
         
         let typesToRead: Set = [
+            HKObjectType.workoutType(),
             HKObjectType.quantityType(forIdentifier: .heartRate)!,
             HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
@@ -65,8 +66,17 @@ final class WorkoutManager: NSObject, ObservableObject {
             try await healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead)
         } catch {
             print("HealthKit authorization failed: \(error)")
-            errorMessage = "HealthKit authorization failed: \(error.localizedDescription)"
+            errorMessage = "Please enable HealthKit permissions in Watch Settings"
             return
+        }
+        
+        for type in typesToRead {
+            let status = healthStore.authorizationStatus(for: type)
+            if status == .sharingDenied {
+                print("HealthKit permission denied for: \(type)")
+                errorMessage = "Please enable HealthKit permissions in Watch Settings"
+                return
+            }
         }
         
         do {
@@ -93,13 +103,21 @@ final class WorkoutManager: NSObject, ObservableObject {
                     let errorMsg = error?.localizedDescription ?? "unknown error"
                     print("beginCollection failed: \(errorMsg)")
                     Task { @MainActor in
-                        self.errorMessage = "Failed to start tracking: \(errorMsg)"
+                        if errorMsg.contains("authorized") || errorMsg.contains("permission") {
+                            self.errorMessage = "Please enable HealthKit permissions in Watch Settings"
+                        } else {
+                            self.errorMessage = "Failed to start tracking: \(errorMsg)"
+                        }
                     }
                 }
             }
         } catch {
             print("Failed to start workout: \(error)")
-            errorMessage = "Failed to start workout: \(error.localizedDescription)"
+            if error.localizedDescription.contains("authorized") || error.localizedDescription.contains("permission") {
+                errorMessage = "Please enable HealthKit permissions in Watch Settings"
+            } else {
+                errorMessage = "Failed to start workout: \(error.localizedDescription)"
+            }
         }
     }
     
